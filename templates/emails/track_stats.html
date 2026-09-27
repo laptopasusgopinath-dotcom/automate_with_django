@@ -3,26 +3,109 @@
 {% block title %}Email track stats{% endblock %}
 
 {% block content %}
+<!-- Bootstrap Icons (add this to base.html <head> if not already included) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-<div class="container">
-    <h2 class="text-center p-5">Email Statistics</h2>
+<style>
+    .hero-title {
+        font-weight: 700;
+        background: linear-gradient(90deg, #f7971e, #ffd200);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .stats-card {
+        border: none;
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+
+    .stats-card-header {
+        background: linear-gradient(135deg, #f7971e, #ffd200);
+        color: #212529;
+        padding: 1.5rem 2rem;
+    }
+
+    .stats-card-header b {
+        font-weight: 700;
+    }
+
+    .stats-item {
+        margin-bottom: 0.25rem;
+    }
+
+    .stats-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .stats-item i {
+        margin-right: 0.4rem;
+    }
+
+    .mail-body {
+        border: 1px solid #eee;
+        border-radius: 0.5rem;
+        padding: 1.25rem;
+        margin-top: 1rem;
+        background: #fafafa;
+    }
+
+    .attachment img {
+        border-radius: 0.5rem;
+        margin-top: 1rem;
+        border: 1px solid #eee;
+    }
+
+    .no-attachment {
+        color: #6c757d;
+        margin-top: 1rem;
+    }
+
+    .back-link {
+        color: #4e54c8;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .back-link:hover {
+        color: #ff6a00;
+        text-decoration: underline;
+    }
+</style>
+
+<div class="container" style="padding: 50px;">
+    <h2 class="hero-title text-center mb-2">Email Statistics</h2>
+    <p class="text-center mb-4">
+        <a href="{% url 'track_dashboard' %}" class="back-link">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+    </p>
+
     <div class="row">
         <div class="col-md-8 mx-auto">
-            <div class="card">
-                <div class="card-header">
+            <div class="card stats-card shadow">
+                <div class="stats-card-header">
                     <div class="row">
                         <div class="col-md-6">
-                            Total Emails Sent: <b>{{ total_sent }}</b> <br>
-                            Sent at: <b>{{ email.sent_at }}</b>          
+                            <div class="stats-item">
+                                <i class="bi bi-send"></i>Total Emails Sent: <b>{{ total_sent }}</b>
+                            </div>
+                            <div class="stats-item">
+                                <i class="bi bi-clock"></i>Sent at: <b>{{ email.sent_at }}</b>
+                            </div>
                         </div>
-
-                        <div class="col-md-6 text-end">
-                            Opened: <b>{{email.open_rate}}%</b> <br>
-                            Clicked: <b>{{email.click_rate}}%</b>          
+                        <div class="col-md-6 text-md-end">
+                            <div class="stats-item">
+                                <i class="bi bi-envelope-open"></i>Opened: <b>{{ email.open_rate }}%</b>
+                            </div>
+                            <div class="stats-item">
+                                <i class="bi bi-cursor"></i>Clicked: <b>{{ email.click_rate }}%</b>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
                     <h4>{{ email.subject }}</h4>
                     <div class="mail-body">
                         {{ email.body | safe }}
@@ -33,7 +116,7 @@
                         </div>
                     {% else %}
                         <div class="no-attachment">
-                            <p>No attachment</p>
+                            <p><i class="bi bi-paperclip"></i> No attachment</p>
                         </div>
                     {% endif %}
                 </div>
@@ -41,5 +124,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}

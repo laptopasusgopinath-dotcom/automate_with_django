@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
+from django.contrib import messages
 from .forms import CompressImageForm
 from PIL import Image
 import io
@@ -32,8 +33,8 @@ def compress(request):
             # Automatically download the compressed file
             response = HttpResponse(buffer.getvalue(), content_type=f'image/{output_format.lower()}')
             response['Content-Disposition'] = f'attachment; filename=compressed_{original_img}'
+            messages.success(request, 'Your image has been compressed and downloaded successfully.')
             return response
-            # return redirect('compress')
 
     else:
         form = CompressImageForm()

@@ -54,7 +54,7 @@ def export_data(request):
         # call the export data task
         export_data_task.delay(model_name)
 
-        messages.success(request, 'Your data is being exported, you will be notified onec it is done.')
+        messages.success(request, 'Your data is being exported, you will be notified once it is done.')
         return redirect('export_data')
     else:
         custom_models = get_all_custom_models()

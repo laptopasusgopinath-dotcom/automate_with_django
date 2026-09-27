@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Stock Detail{% endblock %}
+{% block content %}
+<!-- Bootstrap Icons (add this to base.html <head> if not already included) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<style>
+    .stock-card {
+        border: none;
+        border-radius: 1rem;
+        overflow: hidden;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .stock-card-header {
+        background: linear-gradient(135deg, #232526, #414345);
+        color: #fff;
+        padding: 2rem;
+    }
+
+    .stock-symbol {
+        opacity: 0.8;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .stock-price {
+        font-weight: 900;
+        font-size: 2.2rem;
+        margin: 0.5rem 0 0.25rem;
+    }
+
+    .stock-change {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .stock-sector {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        opacity: 0.75;
+        margin-left: 0.5rem;
+    }
+
+    .stock-meta {
+        opacity: 0.8;
+        font-size: 0.85rem;
+    }
+
+    .stock-card-body {
+        padding: 2rem;
+        background: #fff;
+    }
+
+    .stock-card-body .table td:first-child {
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .stock-card-body .table td:last-child {
+        text-align: right;
+        font-weight: 600;
+    }
+
+    .btn-glow {
+        background: linear-gradient(135deg, #232526, #414345);
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        padding: 0.6rem 1.4rem;
+        border-radius: 0.5rem;
+        transition: all 0.25s ease;
+    }
+
+    .btn-glow:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0.5rem 1rem rgba(35, 37, 38, 0.35);
+        color: #fff;
+    }
+</style>
+
+<div class="container mt-5" style="padding: 50px;">
+    <div class="card stock-card shadow">
+        <div class="stock-card-header">
+            <div>
+                <span class="h4">{{ stock_data.stock }}</span>
+                <span class="stock-symbol">({{ stock_data.stock.symbol }})</span>
+                <span class="stock-sector">{{ stock_data.stock.sector }}</span>
+            </div>
+            <div class="stock-price">{{ stock_data.current_price }}</div>
+            <div class="stock-change">
+                <span class="{% if '-' in stock_data.price_changed %}text-danger{% else %}text-success{% endif %}">
+                    {% if '-' in stock_data.price_changed %}{{ stock_data.price_changed }}{% else %}+{{ stock_data.price_changed }}{% endif %}
+                </span>
+                <span class="{% if '-' in stock_data.percentage_changed %}text-danger{% else %}text-success{% endif %}">
+                    ({% if '-' in stock_data.percentage_changed %}{{ stock_data.percentage_changed }}{% else %}+{{ stock_data.percentage_changed }}{% endif %})
+                </span>
+            </div>
+            <small class="stock-meta">{{ stock_data.stock.exchange }} Listed - {{ stock_data.stock.country }}</small>
+        </div>
+
+        <div class="stock-card-body">
+            <table class="table table-hover mb-4">
+                <tbody>
+                    <tr>
+                        <td>Previous Close</td><td>{{ stock_data.previous_close }}</td>
+                    </tr>
+                    <tr>
+                        <td>52 Week High</td><td>{{ stock_data.week_52_high }}</td>
+                    </tr>
+                    <tr>
+                        <td>52 Week Low</td><td>{{ stock_data.week_52_low }}</td>
+                    </tr>
+                    <tr>
+                        <td>Market Cap</td><td>{{ stock_data.market_cap }}</td>
+                    </tr>
+                    <tr>
+                        <td>P/E Ratio</td><td>{{ stock_data.pe_ratio }}</td>
+                    </tr>
+                    <tr>
+                        <td>Dividend Yield</td><td>{{ stock_data.dividend_yield }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <a href="{% url 'stocks' %}" class="btn btn-glow">
+                <i class="bi bi-arrow-left me-1"></i> Check Another Stock
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

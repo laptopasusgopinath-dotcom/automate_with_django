@@ -27,6 +27,12 @@ def send_email(request):
             # Extract email addresses from the Subscriber model in the selected email list
             subscribers = Subscriber.objects.filter(email_list=email_list)
 
+             # Check if the email list is empty
+            if not subscribers.exists():
+                email.delete()   # Optional: remove the saved email record
+                messages.error(request, "There are no email addresses in the selected email list.")
+                return redirect('send_email')
+
             to_email = [email.email_address for email in subscribers]
 
             if email.attachment:

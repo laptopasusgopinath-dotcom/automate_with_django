@@ -3,36 +3,105 @@
 {% block title %}Email track dashboard{% endblock %}
 
 {% block content %}
+<!-- Bootstrap Icons (add this to base.html <head> if not already included) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-<div class="container">
-    <h2 class="text-center p-5">Email Engagement Tracking</h2>
-    <table class="table table-hover">
-    <thead>
-        <tr>
-        <th scope="col">#</th>
-        <th scope="col">Subject</th>
-        <th scope="col">List</th>
-        <th scope="col">Total Sent</th>
-        <th scope="col">Events</th>
-        <th scope="col">Sent at</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for email in emails %}
-        <tr>
-            <th scope="row">{{ forloop.counter }}</th>
-            <td><a href="{% url 'track_stats' email.id %}">{{ email.subject }}</a></td>
-            <td>{{ email.email_list }}</td>
-            <td>{{ email.total_sent }}</td>
-            <td>
-                <div>{{email.open_rate}}% Opened</div>
-                <div>{{email.click_rate}}% Clicked</div>
-            </td>
-            <td>{{ email.sent_at }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-    </table>
+<style>
+    .hero-title {
+        font-weight: 700;
+        background: linear-gradient(90deg, #f7971e, #ffd200);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .dashboard-card {
+        border: none;
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+
+    .dashboard-card .table {
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    .table thead th {
+        background: linear-gradient(135deg, #f7971e, #ffd200);
+        color: #212529;
+        border: none;
+        font-weight: 600;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    .subject-link {
+        font-weight: 600;
+        color: #4e54c8;
+        text-decoration: none;
+    }
+
+    .subject-link:hover {
+        color: #ff6a00;
+        text-decoration: underline;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #6c757d;
+    }
+
+    .empty-state i {
+        font-size: 2rem;
+        color: #ffd200;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+</style>
+
+<div class="container" style="padding: 50px;">
+    <h2 class="hero-title text-center p-5">Email Engagement Tracking</h2>
+
+    <div class="card dashboard-card shadow">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">List</th>
+                        <th scope="col">Total Sent</th>
+                        <th scope="col">Events</th>
+                        <th scope="col">Sent at</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for email in emails %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td><a href="{% url 'track_stats' email.id %}" class="subject-link">{{ email.subject }}</a></td>
+                        <td>{{ email.email_list }}</td>
+                        <td>{{ email.total_sent }}</td>
+                        <td>
+                            <div>{{ email.open_rate }}% Opened</div>
+                            <div>{{ email.click_rate }}% Clicked</div>
+                        </td>
+                        <td>{{ email.sent_at }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="bi bi-inbox"></i>
+                                No emails have been sent yet.
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-
 {% endblock %}
